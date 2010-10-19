@@ -1,0 +1,3 @@
+= Introduction
+
+This is reggae, a rewrite of riddim (http://github.com/noah/riddim).
