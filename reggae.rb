@@ -10,5 +10,5 @@ end
 EM.run do |conn|
   host, port = "127.0.0.1", 57715
   EM.start_server host, port, Reggae::Server, host, port
-  puts ["{", "reggae", "http://#{host}:#{port}", "}"].join " :: "
+  puts ['{', "reggae", "http://#{host}:#{port}", '}'].join ' '
 end

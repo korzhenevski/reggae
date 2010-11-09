@@ -24,7 +24,6 @@ module Reggae
       @client_headers = Hash[*@http_headers.split("\x00").map do |h|
         h.split(/:\s+/,2)
       end.flatten]
-      puts @client_headers
     end
 
     def send_server_headers
@@ -40,8 +39,7 @@ module Reggae
       }.each { |h,v| @response.headers[h] = v}
       @response.content_type 'audio/x-mpegurl'
       @response.status = 200    # setting status implicitly calls send_header
-      puts @response.headers
-      # @response.send_headers   # <-- won't work
+      @response.send_headers   # <-- won't work
       exit
     end
 
@@ -62,7 +60,6 @@ module Reggae
 
     def unbind
       puts "disconnected"
-      puts @streamer
     end
 
   end
