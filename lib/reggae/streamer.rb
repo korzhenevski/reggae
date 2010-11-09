@@ -111,6 +111,7 @@ module Reggae
       pad = 16 - l % 16
       meta = "#{(l+pad)/16}StreamTitle='#{title}';StreamUrl='#{url}';#{padding[0..pad]}"
     end
-  end
 
-end
+  end # class
+
+end # module
