@@ -2,6 +2,11 @@
 $:.push File.expand_path(File.dirname(__FILE__) + '/lib')
 %w[pp rubygems eventmachine evma_httpserver reggae socket].each{|lib| require lib}
 
+trap "SIGINT" do
+  puts "Caught SIGINT, exiting."
+  exit
+end
+
 EM.run do |conn|
   port = 57715 #     REGGAE
   host = '0.0.0.0'

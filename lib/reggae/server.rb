@@ -35,11 +35,11 @@ module Reggae
         'icy-genre'     => 'pfunk',
         'icy-url'       => 'http://downbe.at:57715',
         'icy-pub'       => false,
-        'icy-metaint'   => 16384
+        'icy-metaint'   => 0
       }.each { |h,v| @response.headers[h] = v}
       @response.content_type 'audio/x-mpegurl'
       @response.status = 200    # setting status implicitly calls send_header
-      #@response.send_headers   # <-- won't work
+      # @response.send_headers   # <-- won't work
     end
 
     def process_http_request
@@ -53,11 +53,10 @@ module Reggae
         when 'GET' then
           # @response.send_response
           # Reggae::Streamer.new 
+          Reggae::Streamer.new self
         when 'POST' then
           puts 'got a post'
       end
-      # response.content =
-      # response.send_response
     end
 
     def unbind
