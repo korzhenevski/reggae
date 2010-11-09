@@ -1,10 +1,18 @@
-#!/usr/bin/env ruby
-$:.push File.expand_path(File.dirname(__FILE__) + '/lib')
-%w[pp rubygems eventmachine evma_httpserver reggae].each{|lib| require lib}
+#!/usr/bin/env ruby -w
+#
+$:.unshift File.expand_path(File.join(File.dirname(__FILE__), "/lib"))
+%w[pp rubygems eventmachine evma_httpserver reggae socket].each{|lib| require lib}
+Reggae
 
+include Reggae
+
+trap "SIGINT" do
+  puts "Caught interrupt, exiting . . ."
+  exit 0
+end
+ 
 EM.run do |conn|
-  port = 57715 #     REGGAE
-  host = '0.0.0.0'
-  EM.start_server host, port, Reggae::Server
-  puts "{ reggae  http://#{host}:#{port} }"
+  host, port = "127.0.0.1", 57715
+  EM.start_server host, port, Reggae::Server, host, port
+  puts "{ :: REGGAE :: http://#{host}:#{port} }"
 end
