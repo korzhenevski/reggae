@@ -8,75 +8,15 @@ module Reggae
       stream
     end
 
-    def bin2dec(n)
-      bits = []
-      bits.concat(n)
-      bits.reverse!
-      multi = 1
-      value = 0
-      bits.each do |bit|
-        value += bit*multi
-        multi *= 2
-      end
-      value
-    end
-
-    def bytes2bin(bytes, sz = 8)
-      if sz < 1 or sz > 8
-        puts "Invalid sz value " + sz.to_s
-        exit(-1)
-      end
-      retVal = []
-      bytes.each_byte do |b|
-        bits = []
-        b = b.ord
-        while b > 0
-          bits.push(b & 1)
-          b >>= 1
-        end
-
-        if (bits.length < sz)
-          bits.concat([0] * (sz - bits.length))
-        elsif (bits.length > sz)
-          bits = bits[0..sz]
-        end
-
-        # Big endian byte order.
-        bits.reverse!
-        retVal.concat(bits);
-      end
-
-      if retVal.length == 0
-        retVal = [0]
-      end
-
-      retVal
-    end
-
-    def start(path)
-      f = open(path, 'r')
-      id3 = f.read(3)
-      return 0 if not id3 == "ID3"
-      f.seek(6)
-      l = f.read(4)
-      start = bin2dec(bytes2bin(l,7)) + 10
-      f.close()
-      start
-    end
-
-    def offset(path)
-      start(path)
-    end
-
     def stream
       song = "/home/noah/toodeloo.mp3"
       buffer = 0
       buffer_size = 4096
       interval = 16384
       backpressure_level = 50000
-      audio_len = File.stat(song).size?
+      audio_len = Reggae::Audio.size? song 
       byte_count = 0
-      total_bytes = self.offset song # audio data begins here
+      total_bytes = Reggae::Audio.offset song # audio data begins here
       @conn.send_data meta
       loop do
         #return if f.tell >= audio_len
